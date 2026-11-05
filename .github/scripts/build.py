@@ -5,6 +5,7 @@ Zero configuration: the username is the repo owner. Optional tweaks live in
 .github/profile.config.json. Standard library only.
 """
 import base64
+import hashlib
 import json
 import os
 import random
@@ -26,6 +27,7 @@ ASSETS = Path(os.environ.get("ASSETS_OUT", ROOT / "assets"))
 OUT = Path(os.environ.get("README_OUT", ROOT / "README.md"))
 TOKEN = os.environ.get("GITHUB_TOKEN", "")
 SAMPLE = os.environ.get("SAMPLE") == "1"
+BRANCH = os.environ.get("GITHUB_REF_NAME") or "main"
 USER = os.environ.get("GH_USER") or os.environ.get("GITHUB_REPOSITORY_OWNER") or "octocat"
 
 DEFAULT_CONFIG = {
@@ -36,7 +38,20 @@ DEFAULT_CONFIG = {
     "pinned_repos": [],       # repo names to feature (default: top starred)
     "show_heatmap": True,
     "linkedin": "",           # full URL, shown in the links row
+    "tech_stack": [],         # your stack: a list, or {"Group": [...], "Group 2": [...]} for two rows
 }
+
+TECH_COLORS = {
+    "python": "#3776AB", "javascript": "#f1e05a", "typescript": "#3178c6", "sql": "#e38c00",
+    "node.js": "#6cc24a", "express.js": "#8b949e", "express": "#8b949e", "postgresql": "#336791",
+    "docker": "#2496ED", "ci/cd": "#f97316", "jest": "#C21325", "react": "#22d3ee", "git": "#f05032",
+    "github actions": "#2088FF", "mongodb": "#47A248", "redis": "#DC382D", "html": "#e34c26", "css": "#563d7c",
+    "aws": "#FF9900", "linux": "#facc15", "kubernetes": "#326CE5", "graphql": "#E10098", "mysql": "#00758F",
+}
+
+
+def tech_color(name):
+    return TECH_COLORS.get(name.lower(), svgkit.lang_color(name))
 
 TOPIC_NAMES = {
     "nextjs": "Next.js", "next-js": "Next.js", "nodejs": "Node.js", "node": "Node.js", "react": "React",
@@ -194,15 +209,22 @@ def load_config():
     return cfg
 
 
+def asset_url(fname):
+    """Absolute raw URL + content fingerprint, so a rebuilt image is never served from a stale cache."""
+    f = ASSETS / fname
+    h = hashlib.sha1(f.read_bytes()).hexdigest()[:8] if f.exists() else "0"
+    return f"https://raw.githubusercontent.com/{USER}/{USER}/{BRANCH}/assets/{fname}?v={h}"
+
+
 def pic(name, alt, mode, width="100%", href=None):
     if mode == "auto":
         inner = (
-            f'<picture><source media="(prefers-color-scheme: dark)" srcset="./assets/{name}-dark.svg">'
-            f'<source media="(prefers-color-scheme: light)" srcset="./assets/{name}-light.svg">'
-            f'<img src="./assets/{name}-dark.svg" alt="{escape(alt)}" width="{width}"></picture>'
+            f'<picture><source media="(prefers-color-scheme: dark)" srcset="{asset_url(name + "-dark.svg")}">'
+            f'<source media="(prefers-color-scheme: light)" srcset="{asset_url(name + "-light.svg")}">'
+            f'<img src="{asset_url(name + "-dark.svg")}" alt="{escape(alt)}" width="{width}"></picture>'
         )
     else:
-        inner = f'<img src="./assets/{name}-{mode}.svg" alt="{escape(alt)}" width="{width}">'
+        inner = f'<img src="{asset_url(f"{name}-{mode}.svg")}" alt="{escape(alt)}" width="{width}">'
     return f'<a href="{escape(href)}">{inner}</a>' if href else inner
 
 
@@ -250,8 +272,19 @@ def build(D, cfg):
     featured = featured[:6]
 
     # chips
-    row1 = [(k, svgkit.lang_color(k)) for k, _ in langs]
-    row2 = [(pretty_topic(t), TOPIC_COLORS[i % len(TOPIC_COLORS)]) for i, (t, _) in enumerate(D["topics"].most_common(12))]
+    ts = cfg.get("tech_stack")
+    if ts:
+        if isinstance(ts, dict):
+            groups = [g for g in ts.values() if g]
+        else:
+            half = (len(ts) + 1) // 2
+            groups = [g for g in (ts[:half], ts[half:]) if g]
+        rows = [[(n, tech_color(n)) for n in g] for g in groups]
+    else:
+        row1 = [(k, svgkit.lang_color(k)) for k, _ in langs]
+        row2 = [(pretty_topic(t), TOPIC_COLORS[i % len(TOPIC_COLORS)]) for i, (t, _) in enumerate(D["topics"].most_common(12))]
+        rows = [r for r in (row1, row2) if r]
+    flat_stack = [n for g in (ts.values() if isinstance(ts, dict) else [ts]) for n in g] if ts else []
 
     weeks = D["weeks"]
     if weeks:
@@ -270,7 +303,7 @@ def build(D, cfg):
         files = {
             f"hero-{theme}.svg": svgkit.hero(theme, acc, name, taglines, meta, D["avatar"], initials(name)),
             f"stats-{theme}.svg": svgkit.stats(theme, acc, stats, langs),
-            f"stack-{theme}.svg": svgkit.stack(theme, acc, [row1, row2]) if row1 else None,
+            f"stack-{theme}.svg": svgkit.stack(theme, acc, rows) if rows else None,
             f"footer-{theme}.svg": svgkit.footer(theme, acc),
         }
         if show_heat:
@@ -299,6 +332,8 @@ def build(D, cfg):
         about.append(f"- 🔭 Currently working on **[{r0['name']}]({r0['html_url']})**")
     if main_lang:
         about.append(f"- 💻 Mostly writing **{main_lang}**" + (f" and **{langs[1][0]}**" if len(langs) > 1 else ""))
+    if flat_stack:
+        about.append("- 🛠️ Stack: " + " · ".join(f"**{n}**" for n in flat_stack))
     if D["bio"]:
         about.append(f"- 💬 {D['bio']}")
     if D["location"]:
@@ -315,7 +350,7 @@ def build(D, cfg):
         "{{LINKS}}": p("  ·  ".join(links)),
         "{{ABOUT}}": section("About", "\n".join(about)),
         "{{STATS}}": p(pic("stats", "GitHub stats", mode)),
-        "{{STACK}}": section("Tech Stack", p(pic("stack", "Languages and tools", mode))) if row1 else "",
+        "{{STACK}}": section("Tech Stack", p(pic("stack", "Languages and tools", mode))) if rows else "",
         "{{HEATMAP}}": p(pic("heatmap", "Contribution activity", mode)) if show_heat else "",
         "{{PROJECTS}}": section("Featured Projects", p(cards)) if featured else "",
         "{{RECENT}}": section("Recently Active", recent) if recent else "",
