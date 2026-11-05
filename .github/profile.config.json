@@ -5,5 +5,20 @@
   "taglines": [],
   "pinned_repos": [],
   "show_heatmap": true,
-  "linkedin": ""
+  "linkedin": "",
+  "tech_stack": {
+    "Languages & Runtime": [
+      "Python",
+      "JavaScript",
+      "SQL",
+      "Node.js",
+      "Express.js"
+    ],
+    "Data & Tooling": [
+      "PostgreSQL",
+      "Docker",
+      "CI/CD",
+      "Jest"
+    ]
+  }
 }
