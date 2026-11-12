@@ -14,14 +14,14 @@
 - ⚡ **24** public repos · **1** stars · **6** followers
 
 
-<p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/KoL-200/KoL-200/main/assets/stats-dark.svg?v=730af536"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/KoL-200/KoL-200/main/assets/stats-light.svg?v=e9d5eb8f"><img src="https://raw.githubusercontent.com/KoL-200/KoL-200/main/assets/stats-dark.svg?v=730af536" alt="GitHub stats" width="100%"></picture></p>
+<p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/KoL-200/KoL-200/main/assets/stats-dark.svg?v=25feb39c"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/KoL-200/KoL-200/main/assets/stats-light.svg?v=559afdbe"><img src="https://raw.githubusercontent.com/KoL-200/KoL-200/main/assets/stats-dark.svg?v=25feb39c" alt="GitHub stats" width="100%"></picture></p>
 
 <h2 align="center">Tech Stack</h2>
 
 <p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/KoL-200/KoL-200/main/assets/stack-dark.svg?v=c6f7062a"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/KoL-200/KoL-200/main/assets/stack-light.svg?v=36822762"><img src="https://raw.githubusercontent.com/KoL-200/KoL-200/main/assets/stack-dark.svg?v=c6f7062a" alt="Languages and tools" width="100%"></picture></p>
 
 
-<p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/KoL-200/KoL-200/main/assets/heatmap-dark.svg?v=1cd745da"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/KoL-200/KoL-200/main/assets/heatmap-light.svg?v=ebf303ed"><img src="https://raw.githubusercontent.com/KoL-200/KoL-200/main/assets/heatmap-dark.svg?v=1cd745da" alt="Contribution activity" width="100%"></picture></p>
+<p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/KoL-200/KoL-200/main/assets/heatmap-dark.svg?v=987b53a3"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/KoL-200/KoL-200/main/assets/heatmap-light.svg?v=cdeb0a98"><img src="https://raw.githubusercontent.com/KoL-200/KoL-200/main/assets/heatmap-dark.svg?v=987b53a3" alt="Contribution activity" width="100%"></picture></p>
 
 <h2 align="center">Featured Projects</h2>
 
@@ -30,8 +30,8 @@
 
 <h2 align="center">Recently Active</h2>
 
-- [Data_Quality_Project](https://github.com/KoL-200/Data_Quality_Project) — 2026-11-11
-- [FormSlug](https://github.com/KoL-200/FormSlug) — 2026-11-10
+- [Data_Quality_Project](https://github.com/KoL-200/Data_Quality_Project) — 2026-11-12
+- [FormSlug](https://github.com/KoL-200/FormSlug) — 2026-11-11
 - [compass-ai-backend](https://github.com/KoL-200/compass-ai-backend) — 2026-11-03
 - [KoL_Portfolio](https://github.com/KoL-200/KoL_Portfolio) — 2026-11-03
 - [health-checker](https://github.com/KoL-200/health-checker) — 2026-10-09
@@ -39,4 +39,4 @@
 
 <p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/KoL-200/KoL-200/main/assets/footer-dark.svg?v=c2d4fe3b"><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/KoL-200/KoL-200/main/assets/footer-light.svg?v=0a188889"><img src="https://raw.githubusercontent.com/KoL-200/KoL-200/main/assets/footer-dark.svg?v=c2d4fe3b" alt="Thanks for stopping by" width="100%"></picture></p>
 
-<p align="center"><sub>Auto-updated daily · last updated 2026-11-11</sub></p>
+<p align="center"><sub>Auto-updated daily · last updated 2026-11-12</sub></p>
